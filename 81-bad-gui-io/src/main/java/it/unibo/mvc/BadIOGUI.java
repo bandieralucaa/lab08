@@ -45,6 +45,35 @@ public class BadIOGUI {
         canvas.add(write, BorderLayout.CENTER);
         frame.setContentPane(canvas);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    
+        //Ex 01.01
+        final JPanel canvas2 = new JPanel();
+        canvas2.setLayout(new BoxLayout(canvas2, BoxLayout.X_AXIS));
+        canvas.add(canvas2, BorderLayout.CENTER);
+        canvas2.add(write);
+
+        //Ex 01.02
+        final JButton read = new JButton("Read from file");
+        canvas2.add(read);
+        read.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+                try {
+                    final List<String> lines = Files.readAllLines(new File(PATH).toPath(), StandardCharsets.UTF_8);
+                    for (final String line : lines) {
+                        System.out.println(line);
+                    }
+                } catch (final IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
+
+
+
+
+
+
         /*
          * Handlers
          */
