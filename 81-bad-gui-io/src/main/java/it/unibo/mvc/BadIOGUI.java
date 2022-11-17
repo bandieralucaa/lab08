@@ -45,7 +45,7 @@ public class BadIOGUI {
         canvas.add(write, BorderLayout.CENTER);
         frame.setContentPane(canvas);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    
+
         //Ex 01.01
         final JPanel canvas2 = new JPanel();
         canvas2.setLayout(new BoxLayout(canvas2, BoxLayout.X_AXIS));
@@ -61,10 +61,10 @@ public class BadIOGUI {
                 try {
                     final List<String> lines = Files.readAllLines(new File(PATH).toPath(), StandardCharsets.UTF_8);
                     for (final String line : lines) {
-                        System.out.println(line);
+                        System.out.println(line); // NOPMD ...
                     }
                 } catch (final IOException e1) {
-                    e1.printStackTrace();
+                    e1.printStackTrace(); // NOPMD ...
                 }
             }
         });
