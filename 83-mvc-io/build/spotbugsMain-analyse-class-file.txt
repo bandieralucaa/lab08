@@ -1,0 +1,5 @@
+C:\Users\Samsung\Desktop\oop-lab08\lab08\83-mvc-io\build\classes\java\main\it\unibo\mvc\Controller.class
+C:\Users\Samsung\Desktop\oop-lab08\lab08\83-mvc-io\build\classes\java\main\it\unibo\mvc\SimpleController.class
+C:\Users\Samsung\Desktop\oop-lab08\lab08\83-mvc-io\build\classes\java\main\it\unibo\mvc\SimpleGUI$1.class
+C:\Users\Samsung\Desktop\oop-lab08\lab08\83-mvc-io\build\classes\java\main\it\unibo\mvc\SimpleGUI$2.class
+C:\Users\Samsung\Desktop\oop-lab08\lab08\83-mvc-io\build\classes\java\main\it\unibo\mvc\SimpleGUI.class
