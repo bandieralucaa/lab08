@@ -1,15 +1,17 @@
 package it.unibo.mvc;
 
 import java.io.FileNotFoundException;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 import java.util.Arrays;
 import java.util.List;
+
 
 /**
  */
 public final class DrawNumberApp implements DrawNumberViewObserver {
-    private static final int MIN = 0;
-    private static final int MAX = 100;
-    private static final int ATTEMPTS = 10;
 
     private final DrawNumber model;
     private final List<DrawNumberView> views;
@@ -18,7 +20,7 @@ public final class DrawNumberApp implements DrawNumberViewObserver {
      * @param views
      *            the views to attach
      */
-    public DrawNumberApp(final DrawNumberView... views) {
+    public DrawNumberApp(final String configFile, final DrawNumberView... views) {
         /*
          * Side-effect proof
          */
@@ -27,7 +29,43 @@ public final class DrawNumberApp implements DrawNumberViewObserver {
             view.setObserver(this);
             view.start();
         }
-        this.model = new DrawNumberImpl(MIN, MAX, ATTEMPTS);
+    
+        final Configuration.Builder builderConf = new Configuration.Builder();
+
+        try(var content = new BufferedReader(new InputStreamReader(ClassLoader.getSystemResourceAsStream(configFile)))){
+            for (var line = content.readLine(); line != null; line = content.readLine()) {
+                final String[] split = line.split(":");
+                if(split.length == 2) {
+                    final int value = Integer.parseInt(split[1].trim());
+                    if(split[0].contains("max")){
+                        builderConf.setMax(value);
+                    } else if(split[0].contains("min")){
+                        builderConf.setMin(value);
+                    } else if(split[0].contains("attempts")){
+                        builderConf.setAttempts(value);
+                    }
+                } else {
+                    displayError("Error in configuration file" + line);
+                }
+
+            }
+        } catch (IOException | NumberFormatException e) {
+            displayError("Error in configuration file" + e.getMessage());
+        }
+        final Configuration conf = builderConf.build();
+        if(conf.isConsistent()){
+            this.model = new DrawNumberImpl(conf);
+        } else {
+            displayError("Error in configuration file" + "min" + conf.getMin() + "max" + conf.getMax() + "attempts" + conf.getAttempts());
+            this.model = new DrawNumberImpl(new Configuration.Builder().build());
+        }
+    
+    }
+
+    private void displayError(final String message) {
+        for (final DrawNumberView view: views) {
+            view.displayError(message);
+        }
     }
 
     @Override
@@ -66,7 +104,11 @@ public final class DrawNumberApp implements DrawNumberViewObserver {
      * @throws FileNotFoundException 
      */
     public static void main(final String... args) throws FileNotFoundException {
-        new DrawNumberApp(new DrawNumberViewImpl());
+        new DrawNumberApp("config.yml", 
+            new DrawNumberViewImpl(), 
+            new DrawNumberViewImpl(), 
+            new PrintStreamView(System.out), 
+            new PrintStreamView("output.log"));
     }
 
 }
