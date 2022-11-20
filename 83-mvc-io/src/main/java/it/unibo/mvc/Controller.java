@@ -14,16 +14,16 @@ public interface Controller {
     void setNextStringPrint(String next);
 
     /**
+     * @return history of printed strings.
+     */
+    List<String> getPrinteStringHistory();
+
+    /**
      * 
      * @return the next string to print.
      */
     String getNextStringPrint();
 
-
-    /**
-     * @return history of printed strings.
-     */
-    List<String> getPrinteStringHistory();
 
    /**
     *  print current string.
